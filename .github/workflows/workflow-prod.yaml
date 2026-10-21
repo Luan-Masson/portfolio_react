@@ -21,6 +21,19 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v4
 
+      - name: Injetar variáveis de produção (.env.production)
+        env:
+          ENV_PRODUCTION: ${{ secrets.ENV_PRODUCTION }}
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+        run: |
+          if [ -n "$ENV_PRODUCTION" ]; then
+            echo "Sobrescrevendo .env.production via secret ENV_PRODUCTION..."
+            printf '%s\n' "$ENV_PRODUCTION" > .env.production
+          elif [ -n "$VITE_API_URL" ]; then
+            echo "Configurando VITE_API_URL via secret VITE_API_URL..."
+            echo "VITE_API_URL=$VITE_API_URL" > .env.production
+          fi
+
       - name: Definir nome da imagem Docker (lowercase)
         id: image-name
         run: |
