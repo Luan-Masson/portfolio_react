@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
-  base: '/portfolio_react/',
+  base: process.env.VITE_BASE_PATH || '/',
   assetsInclude: ['**/*.svg'],
   commonjsOptions: {
     esmExternals: true,
